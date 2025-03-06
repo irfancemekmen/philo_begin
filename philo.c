@@ -27,6 +27,21 @@ int	philo_creat(t_data *data, t_philo *philo)
 	return (0);
 }
 
+void	philo_creat(t_data *data, t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->philo_num)
+	{
+		philo[i].philo_id = i + 1;
+		philo[i].data = data;
+		data->meals_eaten[i] = 0;
+		data->last_meal_time[i] = 0;
+	}
+	
+}
+
 int	death_thread_creat(t_data *data)
 {
 	int	i;
@@ -63,16 +78,12 @@ int	main(int ac, char **av)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (return_func(NULL, NULL, 1));
-	if (av_init(data, av))
-		return (return_func(data, NULL, 1));
-	if (init_sim(data))
+	if (av_init(data, av) || !init_sim(data))
 		return (return_func(data, NULL, 1));
 	philo = malloc(sizeof(t_philo) * data->philo_num);
 	if (!philo)
 		return (return_func(data, NULL, 1));
-	if (philo_creat(data, philo))
-		return (return_func(data, philo, 1));
-	if (death_thread_creat(data))
+	if (philo_creat(data, philo) || death_thread_creat(data))
 		return (return_func(data, philo, 1));
 	return_func(data, philo, 0);
 	return (0);

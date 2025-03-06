@@ -1,6 +1,6 @@
 #include "philo.h"
 
-long long	get_current_time(void)
+long long	current_time(void)
 {
 	struct timeval	time;
 
@@ -11,13 +11,13 @@ long long	get_current_time(void)
 void	ft_sleep(long long ms)
 {
 	long long	start_time;
-	long long	current_time;
+	long long	cur_time;
 
-	start_time = get_current_time();
+	start_time = current_time();
 	while (1)
 	{
-		current_time = get_current_time();
-		if (current_time - start_time >= ms)
+		cur_time = current_time();
+		if (cur_time - start_time >= ms)
 			break ;
 		usleep(1000);
 	}

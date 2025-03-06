@@ -11,7 +11,7 @@ void	check_philo(t_data *data, int id)
 		&& data->states[right] != EATING)
 	{
 		data->states[id] = EATING;
-		data->last_meal_time[id] = get_current_time();
+		data->last_meal_time[id] = current_time();
 		pthread_cond_signal(&data->can_eat[id]);
 	}
 }

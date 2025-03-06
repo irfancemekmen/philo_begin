@@ -36,7 +36,6 @@ typedef struct s_data
 	pthread_mutex_t *forks;      //çatallar
 	pthread_mutex_t state_mutex; // durum değişimi için mutex
 	pthread_cond_t *can_eat;     // yemek yeme koşulu
-	t_philo *philos;             // philolara erişim
 }						t_data;
 
 // philo.c
@@ -46,12 +45,13 @@ int						death_thread_creat(t_data *data);
 int						init_sim(t_data *data);
 int						av_init(t_data *data, char **av);
 //time.c
-long long				get_current_time(void);
+long long				current_time(void);
 void					ft_sleep(long long ms);
 // free.c
-void					free_func(t_data *data, int flag);
 void					destroy_clean(t_data *data);
 int						return_func(t_data *data, t_philo *philo, int flag);
+//progress.c
+void	check_philo(t_data *data, int id);
 
 void					cleanup(t_data *data, t_philo *philos);
 void					*death_monitor_func(void *arg);
