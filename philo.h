@@ -39,12 +39,25 @@ typedef struct s_data
 	t_philo *philos;             // philolara erişim
 }						t_data;
 
+// philo.c
+int						philo_creat(t_data *data, t_philo *philo);
+int						death_thread_creat(t_data *data);
+//init.c
 int						init_sim(t_data *data);
 int						av_init(t_data *data, char **av);
-
+//time.c
 long long				get_current_time(void);
 void					ft_sleep(long long ms);
-
+// free.c
 void					free_func(t_data *data, int flag);
+void					destroy_clean(t_data *data);
+int						return_func(t_data *data, t_philo *philo, int flag);
+
+void					cleanup(t_data *data, t_philo *philos);
+void					*death_monitor_func(void *arg);
+void					*philosopher(void *arg);
+void					put_forks(t_philo *philo);
+void					take_forks(t_philo *philo);
+void					check_philosophers(t_data *data, int id);
 
 #endif
