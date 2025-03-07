@@ -39,7 +39,6 @@ void	philo_creat(t_data *data, t_philo *philo)
 		data->meals_eaten[i] = 0;
 		data->last_meal_time[i] = 0;
 	}
-	
 }
 
 int	death_thread_creat(t_data *data)

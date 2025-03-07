@@ -41,17 +41,17 @@ typedef struct s_data
 // philo.c
 int						philo_creat(t_data *data, t_philo *philo);
 int						death_thread_creat(t_data *data);
-//init.c
+// init.c
 int						init_sim(t_data *data);
 int						av_init(t_data *data, char **av);
-//time.c
+// time.c
 long long				current_time(void);
 void					ft_sleep(long long ms);
 // free.c
 void					destroy_clean(t_data *data);
 int						return_func(t_data *data, t_philo *philo, int flag);
-//progress.c
-void	check_philo(t_data *data, int id);
+// progress.c
+void					check_philo(t_data *data, int id);
 
 void					cleanup(t_data *data, t_philo *philos);
 void					*death_monitor_func(void *arg);
