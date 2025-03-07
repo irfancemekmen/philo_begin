@@ -12,6 +12,39 @@ void	check_philo(t_data *data, int id)
 	{
 		data->states[id] = EATING;
 		data->last_meal_time[id] = current_time();
-		pthread_cond_signal(&data->can_eat[id]);
+		data->eat_flags[id] = 1;
+	}
+}
+
+void	take_forks(t_philo *philo)
+{
+	t_data	*data;
+	int		can_eat;
+
+	data = philo->data;
+	pthread_mutex_lock(&data->state_mutex);
+	printf("%lld ms: %d numaralo filo uyuyor.\n", current_time()
+		- data->sim_start, philo->philo_id + 1);
+	check_philo(data, philo->philo_id);
+	can_eat = data->eat_flags[philo->philo_id];
+	pthread_mutex_unlock(&data->state_mutex);
+	if (!can_eat)
+	{
+		while (!data->sim_stop)
+		{
+			usleep(100);
+			pthread_mutex_lock(&data->state_mutex);
+			can_eat = data->eat_flags[philo->philo_id];
+			pthread_mutex_unlock(&data->state_mutex);
+			if (can_eat || data->sim_stop)
+				break ;
+		}
+	}
+	if (!data->sim_stop)
+	{
+		pthread_mutex_lock(&data->state_mutex);
+		printf("%lld ms: %d numaralı filo yemek yiyor.\n", current_time()
+			- data->sim_start, philo->philo_id + 1);
+		pthread_mutex_unlock(&data->state_mutex);
 	}
 }

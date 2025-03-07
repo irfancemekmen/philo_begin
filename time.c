@@ -19,6 +19,6 @@ void	ft_sleep(long long ms)
 		cur_time = current_time();
 		if (cur_time - start_time >= ms)
 			break ;
-		usleep(1000);
+		usleep(100);
 	}
 }
