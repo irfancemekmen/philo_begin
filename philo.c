@@ -27,19 +27,19 @@ int	philo_creat(t_data *data, t_philo *philo)
 	return (0);
 }
 
-void	philo_creat(t_data *data, t_philo *philo)
-{
-	int	i;
+// void	philo_creat(t_data *data, t_philo *philo)
+// {
+// 	int	i;
 
-	i = -1;
-	while (++i < data->philo_num)
-	{
-		philo[i].philo_id = i + 1;
-		philo[i].data = data;
-		data->meals_eaten[i] = 0;
-		data->last_meal_time[i] = 0;
-	}
-}
+// 	i = -1;
+// 	while (++i < data->philo_num)
+// 	{
+// 		philo[i].philo_id = i + 1;
+// 		philo[i].data = data;
+// 		data->meals_eaten[i] = 0;
+// 		data->last_meal_time[i] = 0;
+// 	}
+// }
 
 int	death_thread_creat(t_data *data)
 {

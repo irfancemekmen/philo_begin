@@ -7,6 +7,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+//eat>sleep>think sıralaması
 # define THINKING 0
 # define SLEEP 1
 # define EATING 2
@@ -43,6 +44,7 @@ int			death_thread_creat(t_data *data);
 // init.c
 int			init_sim(t_data *data);
 int			av_init(t_data *data, char **av);
+void		mutex_init_func(t_data *data);
 // time.c
 long long	current_time(void);
 void		ft_sleep(long long ms);

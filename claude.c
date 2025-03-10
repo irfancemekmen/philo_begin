@@ -6,9 +6,9 @@
 #include <sys/time.h>
 
 // Filozof durumları
-#define THINKING 0
-#define HUNGRY 1
-#define EATING 2
+#define THINKING 0  // bura sleep olucak
+#define HUNGRY 1    // bura think olucak
+#define EATING 2    // bura eat kalıcak
 
 // Renkli çıktı için
 #define RED "\x1B[31m"
@@ -393,7 +393,6 @@ int main(int argc, char **argv)
         printf("Simülasyon başlatılamadı: Bellek hatası\n");
         return 1;
     }
-
     // Filozofları oluştur
     philos = malloc(sizeof(t_philo) * data->philosopher_count);
     if (!philos)
@@ -401,7 +400,7 @@ int main(int argc, char **argv)
         cleanup(data, NULL);
         return 1;
     }
-
+    
     // Filozof thread'lerini başlat
     for (int i = 0; i < data->philosopher_count; i++)
     {
@@ -411,13 +410,14 @@ int main(int argc, char **argv)
         {
             data->simulation_stop = 1;
             for (int j = 0; j < i; j++)
-                pthread_join(data->threads[j], NULL);
+            pthread_join(data->threads[j], NULL);
             cleanup(data, philos);
             printf("Thread oluşturulamadı\n");
             return 1;
         }
     }
-
+    
+//+++
     // Ölüm kontrolü thread'ini başlat (filozof thread'lerinden sonra)
     if (pthread_create(&data->death_monitor, NULL, death_monitor_func, data) != 0)
     {

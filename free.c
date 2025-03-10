@@ -11,12 +11,12 @@ void	destroy_clean(t_data *data)
 			pthread_mutex_destroy(&data->forks[i++]);
 		free(data->forks);
 	}
-	if (data->can_eat)
+	if (data->eat_mutex)
 	{
 		i = 0;
 		while (i < data->philo_num)
-			pthread_cond_destroy(&data->can_eat[i++]);
-		free(data->can_eat);
+			pthread_mutex_destroy(&data->eat_mutex[i++]);
+		free(data->eat_mutex);
 	}
 	pthread_mutex_destroy(&data->state_mutex);
 }
