@@ -24,13 +24,9 @@ int	init_sim(t_data *data)
 	if (!data->last_meal_time)
 		return (return_func(data, NULL, 1));
 	pthread_mutex_init(&data->state_mutex, NULL);
-	data->sim_start = current_time();
+	data->start_time = current_time();
 	mutex_init_func(data);
 	return (1);
-}
-
-int	mutex_dest(t_data *data, int flag, int x)
-{
 }
 
 int	mutex_init_func(t_data *data)
@@ -45,6 +41,10 @@ int	mutex_init_func(t_data *data)
 		return (mutex_dest(data, 2, i));
 	if (pthread_mutex_init(&data->print_mutex, NULL))
 		return (mutex_dest(data, 3, i));
+	if (pthread_mutex_init(&data->time_t, NULL))
+		return (mutex_dest(data, 4, i));
+	if (pthread_mutex_init(&data->had_enough_mutex, NULL))
+		return (mutex_dest(data, 5, i));
 	return (0);
 }
 
