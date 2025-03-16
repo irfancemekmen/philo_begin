@@ -73,7 +73,7 @@ int	thread_start(t_data *data, t_philo *philos)
 			while (++j < i)
 				pthread_join(data->threads[j], NULL);
 			// Thread oluşturma hatası durumunda temizlik yap
-			cleanup(data, philos);
+			cleanup(data, philos, 1);
 			printf("Thread oluşturulamadı\n");
 			return (1);
 		}

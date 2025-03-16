@@ -13,10 +13,7 @@ int	av_config(char **av, t_data *data)
 	if (data->philosopher_count <= 0 || data->time_to_die <= 0
 		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (av[5]
 			&& data->must_eat_count <= 0))
-	{
-		printf("Geçersiz argümanlar.\n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -28,7 +25,9 @@ int	mutex_initialization(t_data *data)
 
 	i = -1;
 	error = 0;
-	error |= pthread_mutex_init(&data->state_mutex, NULL);
+	error = pthread_mutex_init(&data->state_mutex, NULL);
+	if (error)
+		return (1);
 	error |= pthread_mutex_init(&data->stop_mutex, NULL);
 	error |= pthread_mutex_init(&data->print_mutex, NULL);
 	if (error != 0)

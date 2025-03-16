@@ -1,23 +1,12 @@
 #include "philo.h"
 
-void	cleanup(t_data *data, t_philo *philos)
+int	cleanup(t_data *data, t_philo *philos, int error, int flag)
 {
-	int	i;
-
-	// Null kontrolü ekleyelim
+	if (error == 1)
+		printf("Error!\n");
 	if (!data)
-		return ;
-	i = -1;
-	if (data->forks)
-	{
-		while (++i < data->philosopher_count)
-			pthread_mutex_destroy(&data->forks[i]);
-		free(data->forks);
-	}
-	// Mutex yok kontrolü
-	pthread_mutex_destroy(&data->state_mutex);
-	pthread_mutex_destroy(&data->stop_mutex);
-	pthread_mutex_destroy(&data->print_mutex);
+		return (1);
+	init_destroy(data, flag);
 	if (data->threads)
 		free(data->threads);
 	if (data->states)
@@ -28,9 +17,32 @@ void	cleanup(t_data *data, t_philo *philos)
 		free(data->last_meal_time);
 	if (philos)
 		free(philos);
-	// data'yı da serbest bırakalım
 	free(data);
+	return (1);
 }
+
+void	init_destroy(t_data *data, int flag)
+{
+	int	i;
+
+	if (flag > 3)
+	{
+		i = -1;
+		if (data->forks)
+		{
+			while (++i < data->philosopher_count)
+				pthread_mutex_destroy(&data->forks[i]);
+			free(data->forks);
+		}
+	}
+	if (flag > 0)
+		pthread_mutex_destroy(&data->state_mutex);
+	if (flag > 1)
+		pthread_mutex_destroy(&data->stop_mutex);
+	if (flag > 2)
+		pthread_mutex_destroy(&data->print_mutex);
+}
+
 int	main(int ac, char **av)
 {
 	t_data	*data;
@@ -38,31 +50,19 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		printf("USAGE:%s<philosopher_number><death_time><eating_time><sleeping_time>[number of meals each_philosopher_needs_to_eat]\n ",
-				av[0]);
+		printf("Check Arguments!\n");
 		return (1);
 	}
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (1);
-	data->threads = NULL;
-	data->forks = NULL;
-	data->states = NULL;
-	data->meals_eaten = NULL;
-	data->last_meal_time = NULL;
+		return (cleanup(NULL, NULL, 1, 0));
 	if (av_config(av, data) || init_simulation(data))
-	{
-		cleanup(data, NULL);
-		return (1);
-	}
+		return (cleanup(data, NULL, 1, 0));
 	philos = malloc(sizeof(t_philo) * data->philosopher_count);
 	if (!philos)
-	{
-		cleanup(data, NULL);
-		return (1);
-	}
+		return (cleanup(data, NULL, 1));
 	if (thread_start(data, philos))
 		return (1);
-	cleanup(data, philos);
+	cleanup(data, philos, 0);
 	return (0);
 }

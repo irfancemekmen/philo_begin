@@ -8,9 +8,8 @@
 # include <unistd.h>
 
 # define THINKING 0
-# define HUNGRY 1
-# define EATING 2
-# define SLEEP 3
+# define EATING 1
+# define SLEEP 2
 
 # define RED "\x1B[31m"
 # define GREEN "\x1B[32m"
@@ -22,18 +21,18 @@ typedef struct s_data
 {
 	int philosopher_count;       // Filozof sayısı
 	int must_eat_count;          // yemesi gereken minimum yemek sayısı
-	long long simulation_start;  // Simülasyon başlangıç zamanı
 	int *meals_eaten;            // Her filozofun yediği yemek sayısı
-	long long *last_meal_time;   // Her filozofun son yemek yeme zamanı
-	pthread_mutex_t state_mutex; // Durum değişiklikleri için mutex
-	pthread_mutex_t *forks;      // Çatallar (mutex'ler)
 	int *states;                 // Filozofların durumları
-	pthread_t *threads;          // Thread'ler
-	pthread_t death_monitor;     // Ölüm kontrolü için thread
 	int time_to_die;             // Açlıktan ölme süresi (ms)
 	int time_to_eat;             // Yemek yeme süresi (ms)
 	int time_to_sleep;           // Uyuma süresi (ms)
 	int simulation_stop;         // Simülasyonu durdurma bayrağı
+	long long simulation_start;  // Simülasyon başlangıç zamanı
+	long long *last_meal_time;   // Her filozofun son yemek yeme zamanı
+	pthread_t *threads;          // Thread'ler
+	pthread_t death_monitor;     // Ölüm kontrolü için thread
+	pthread_mutex_t state_mutex; // Durum değişiklikleri için mutex
+	pthread_mutex_t *forks;      // Çatallar (mutex'ler)
 	pthread_mutex_t stop_mutex;  // Simülasyonu durdurma bayrağı için mutex
 	pthread_mutex_t print_mutex; // Yazdırma için mutex
 }			t_data;
@@ -43,6 +42,9 @@ typedef struct s_philo
 	int id;       // Filozof ID'si (0'dan başlar)
 	t_data *data; // Program verileri
 }			t_philo;
+
+int			cleanup(t_data *data, t_philo *philos, int error);
+void		init_destroy(t_data *data);
 
 int			philo_dead_control(t_data *data);
 void		*death_monitor_func(void *arg);
@@ -56,7 +58,6 @@ void		ft_sleep(long long ms);
 void		take_forks(t_philo *philo);
 void		put_forks(t_philo *philo);
 void		philo_enough_food(t_data *data);
-void		cleanup(t_data *data, t_philo *philos);
 int			ft_atoi(char *str);
 int			arg_ctrl(char *str);
 int			check_simulation_stop(t_data *data);
