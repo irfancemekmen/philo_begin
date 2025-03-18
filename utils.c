@@ -23,19 +23,6 @@ void	ft_sleep(long long ms)
 	}
 }
 
-int	arg_ctrl(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 int	str_contains(const char *str, const char *substr)
 {
 	int	i;
@@ -57,27 +44,20 @@ int	str_contains(const char *str, const char *substr)
 int	ft_atoi(char *str)
 {
 	int	i;
-	int	sign;
 	int	result;
 
 	i = 0;
-	sign = 1;
 	result = 0;
-	if (arg_ctrl(str))
-		return (0);
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r')
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
+	if (str[i] == '+')
 		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i])
 	{
+		if (str[i] < '0' || str[i] > '9')
+			return (-1);
 		result = result * 10 + str[i] - '0';
 		i++;
 	}
-	return (result * sign);
+	return (result);
 }

@@ -4,9 +4,8 @@ int	cleanup(t_data *data, t_philo *philos, int error, int flag)
 {
 	if (error == 1)
 		printf("Error!\n");
-	if (!data)
-		return (1);
-	init_destroy(data, flag);
+	if (flag > 0)
+		init_destroy(data, flag);
 	if (data->threads)
 		free(data->threads);
 	if (data->states)
@@ -21,10 +20,16 @@ int	cleanup(t_data *data, t_philo *philos, int error, int flag)
 	return (1);
 }
 
-void	init_destroy(t_data *data, int flag)
+int	init_destroy(t_data *data, int flag)
 {
 	int	i;
 
+	if (flag > 0)
+		pthread_mutex_destroy(&data->state_mutex);
+	if (flag > 1)
+		pthread_mutex_destroy(&data->stop_mutex);
+	if (flag > 2)
+		pthread_mutex_destroy(&data->print_mutex);
 	if (flag > 3)
 	{
 		i = -1;
@@ -35,12 +40,7 @@ void	init_destroy(t_data *data, int flag)
 			free(data->forks);
 		}
 	}
-	if (flag > 0)
-		pthread_mutex_destroy(&data->state_mutex);
-	if (flag > 1)
-		pthread_mutex_destroy(&data->stop_mutex);
-	if (flag > 2)
-		pthread_mutex_destroy(&data->print_mutex);
+	return (1);
 }
 
 int	main(int ac, char **av)
@@ -60,9 +60,9 @@ int	main(int ac, char **av)
 		return (cleanup(data, NULL, 1, 0));
 	philos = malloc(sizeof(t_philo) * data->philosopher_count);
 	if (!philos)
-		return (cleanup(data, NULL, 1));
+		return (cleanup(data, NULL, 1, 4));
 	if (thread_start(data, philos))
-		return (1);
-	cleanup(data, philos, 0);
+		return (cleanup(data, philos, 1, 4));
+	cleanup(data, philos, 0, 4);
 	return (0);
 }

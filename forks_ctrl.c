@@ -20,39 +20,37 @@ int	try_take_forks(t_philo *philo)
 	// Tek numaralı filozoflar önce sağ, sonra sol çatal alır
 	if (philo->id % 2 == 0)
 	{
-		if (single_phiolosopher(philo, data, left_fork, right_fork) == 0)
+		if (single_philo(philo, data, left_fork, right_fork) == 0)
 			return (0);
 	}
 	else
 	{
-		if (double_philosopher(philo, data, left_fork, right_fork) == 0)
+		if (double_philo(philo, data, left_fork, right_fork) == 0)
 			return (0);
 	}
 	return (1);
 }
-int	single_phiolosopher(t_philo *philo, t_data *data, int left_fork,
-		int right_fork)
+int	single_philo(t_philo *philo, t_data *data, int lfork, int rfork)
 {
-	if (pthread_mutex_lock(&data->forks[left_fork]) != 0)
+	if (pthread_mutex_lock(&data->forks[lfork]) != 0)
 		return (0);
 	safe_print(data, philo->id, "has taken a fork", YELLOW);
-	if (pthread_mutex_lock(&data->forks[right_fork]) != 0)
+	if (pthread_mutex_lock(&data->forks[rfork]) != 0)
 	{
-		pthread_mutex_unlock(&data->forks[left_fork]);
+		pthread_mutex_unlock(&data->forks[lfork]);
 		return (0);
 	}
 	safe_print(data, philo->id, "has taken a fork", YELLOW);
 	return (1);
 }
-int	double_philosopher(t_philo *philo, t_data *data, int left_fork,
-		int right_fork)
+int	double_philo(t_philo *philo, t_data *data, int lfork, int rfork)
 {
-	if (pthread_mutex_lock(&data->forks[right_fork]) != 0)
+	if (pthread_mutex_lock(&data->forks[rfork]) != 0)
 		return (0);
 	safe_print(data, philo->id, "has taken a fork", YELLOW);
-	if (pthread_mutex_lock(&data->forks[left_fork]) != 0)
+	if (pthread_mutex_lock(&data->forks[lfork]) != 0)
 	{
-		pthread_mutex_unlock(&data->forks[right_fork]);
+		pthread_mutex_unlock(&data->forks[rfork]);
 		return (0);
 	}
 	safe_print(data, philo->id, "has taken a fork", YELLOW);

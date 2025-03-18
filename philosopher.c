@@ -35,6 +35,7 @@ void	*philosopher(void *arg)
 	}
 	return (NULL);
 }
+
 int	philosopher_v2(t_philo *philo, t_data *data, int id)
 {
 	// Son yemek zamanını güncellediğimizden emin olalım
@@ -63,6 +64,7 @@ int	philosopher_v2(t_philo *philo, t_data *data, int id)
 	safe_print(data, id, "thinking", BLUE);
 	return (0);
 }
+
 void	philo_enough_food(t_data *data)
 {
 	int	all_ate_enough;

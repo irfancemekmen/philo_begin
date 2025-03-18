@@ -43,34 +43,44 @@ typedef struct s_philo
 	t_data *data; // Program verileri
 }			t_philo;
 
-int			cleanup(t_data *data, t_philo *philos, int error);
-void		init_destroy(t_data *data);
-
-int			philo_dead_control(t_data *data);
-void		*death_monitor_func(void *arg);
-int			thread_start(t_data *data, t_philo *philos);
-void		*philosopher(void *arg);
-long long	get_current_time_ms(void);
-int			mutex_initialization(t_data *data);
-int			init_simulation(t_data *data);
-int			av_config(char **av, t_data *data);
-void		ft_sleep(long long ms);
+// forks_ctrl.c
+int			try_take_forks(t_philo *philo);
+int			single_philo(t_philo *philo, t_data *data, int lfork, int rfork);
+int			double_philo(t_philo *philo, t_data *data, int lfork, int rfork);
 void		take_forks(t_philo *philo);
 void		put_forks(t_philo *philo);
+
+// initialization.c
+int			av_config(char **av, t_data *data);
+int			mutex_initialization(t_data *data);
+int			init_simulation(t_data *data);
+
+// main.c
+int			cleanup(t_data *data, t_philo *philos, int error, int flag);
+int			init_destroy(t_data *data, int flag);
+
+//philo_dead_ctrl.c
+void		*death_monitor_func(void *arg);
+int			check_philo_death(t_data *data, int i);
+int			philo_dead_control(t_data *data);
+int			thread_start(t_data *data, t_philo *philos);
+int			thread_start_v2(t_data *data);
+void		one_philosopher(t_data *data, t_philo *philo, int left_fork);
+
+//philosopher.c
+void		*philosopher(void *arg);
+int			philosopher_v2(t_philo *philo, t_data *data, int id);
 void		philo_enough_food(t_data *data);
-int			ft_atoi(char *str);
-int			arg_ctrl(char *str);
+
+//security.c
 int			check_simulation_stop(t_data *data);
 void		set_simulation_stop(t_data *data);
 void		safe_print(t_data *data, int id, char *message, char *color);
-int			thread_start_v2(t_data *data);
-int			philosopher_v2(t_philo *philo, t_data *data, int id);
-int			double_philosopher(t_philo *philo, t_data *data, int left_fork,
-				int right_fork);
-int			single_phiolosopher(t_philo *philo, t_data *data, int left_fork,
-				int right_fork);
-void		one_philosopher(t_data *data, t_philo *philo, int left_fork);
+
+//utils.c
+long long	get_current_time_ms(void);
+void		ft_sleep(long long ms);
 int			str_contains(const char *str, const char *substr);
-int			check_philo_death(t_data *data, int i);
+int			ft_atoi(char *str);
 
 #endif

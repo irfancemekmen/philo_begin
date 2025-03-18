@@ -54,7 +54,6 @@ int	philo_dead_control(t_data *data)
 	return (0);
 }
 
-// Thread başlatma
 int	thread_start(t_data *data, t_philo *philos)
 {
 	int	i;
@@ -65,16 +64,13 @@ int	thread_start(t_data *data, t_philo *philos)
 	{
 		philos[i].id = i;
 		philos[i].data = data;
-		if (pthread_create(&data->threads[i], NULL, philosopher,
-				&philos[i]) != 0)
+		if (pthread_create(&data->threads[i], NULL, philosopher, &philos[i]) != 0)
 		{
 			set_simulation_stop(data);
 			j = -1;
 			while (++j < i)
 				pthread_join(data->threads[j], NULL);
 			// Thread oluşturma hatası durumunda temizlik yap
-			cleanup(data, philos, 1);
-			printf("Thread oluşturulamadı\n");
 			return (1);
 		}
 	}
@@ -105,7 +101,7 @@ int	thread_start_v2(t_data *data)
 void	one_philosopher(t_data *data, t_philo *philo, int left_fork)
 {
 	// Sadece tek çatalı alabilir,
-	//ikinci çatal olmadığı için bir süre bekler ve ölür
+	// ikinci çatal olmadığı için bir süre bekler ve ölür
 	pthread_mutex_lock(&data->forks[left_fork]);
 	safe_print(data, philo->id, "has taken a fork", YELLOW);
 	// Tek çatalla bekle - time_to_die süresinden fazla beklemeye gerek yok
