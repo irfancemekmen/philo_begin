@@ -70,14 +70,11 @@ void	take_forks(t_philo *philo)
 		{
 			// Çatallar alındı, yemek yeme durumuna geçiş
 			pthread_mutex_lock(&data->state_mutex);
-			data->states[philo->id] = EATING;
 			// Yemek zamanını güncellemek kritik - hemen güncelle
 			data->last_meal_time[philo->id] = get_current_time_ms();
 			pthread_mutex_unlock(&data->state_mutex);
 			return ;
 		}
-		// Çatalları alamadık, kısa bir süre bekleyip tekrar deneyelim
-		usleep(500); // Kısa bekleme ile yeniden deneme (0.5ms)
 	}
 }
 

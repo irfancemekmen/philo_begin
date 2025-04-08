@@ -9,29 +9,22 @@ void	*philosopher(void *arg)
 	philo = (t_philo *)arg;
 	data = philo->data;
 	id = philo->id;
-	// Filozofların başlangıç zamanlarını daha iyi dengeleyelim
-	// Tek sayılı filozoflar biraz daha uzun beklesin
+	// if (data->philosopher_count == 1)
+	// 	return(one_philosopher(data, philo))
 	if (id % 2 == 1)
-		ft_sleep(data->time_to_eat / 2); // Daha dengeli bir başlangıç gecikmesi
+		ft_sleep(data->time_to_eat / 2);
 	while (!check_simulation_stop(data))
 	{
-		// Çatalları al
 		take_forks(philo);
 		if (check_simulation_stop(data))
 		{
 			put_forks(philo);
 			break ;
 		}
-		// Yemek ye ve sonraki adımları uygula
 		if (philosopher_v2(philo, data, id))
 			break ;
-		// Düşünme süresi için stratejik bir bekleme ekleyelim
-		// Filozofları senkronize etmek için kısa bir düşünme süresi
 		if (data->philosopher_count % 2 == 1)
-		{
-			// Tek sayıda filozof varsa daha dikkatli zamanlama gerekir
 			ft_sleep(data->time_to_eat / 4);
-		}
 	}
 	return (NULL);
 }

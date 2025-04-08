@@ -15,7 +15,6 @@ void	*death_monitor_func(void *arg)
 				return (NULL);
 			i++;
 		}
-		usleep(200);
 	}
 	return (NULL);
 }
@@ -100,6 +99,7 @@ int	thread_start_v2(t_data *data)
 }
 void	one_philosopher(t_data *data, t_philo *philo, int left_fork)
 {
+	left_fork = philo->id;
 	// Sadece tek çatalı alabilir,
 	// ikinci çatal olmadığı için bir süre bekler ve ölür
 	pthread_mutex_lock(&data->forks[left_fork]);

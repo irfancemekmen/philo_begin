@@ -8,6 +8,8 @@ int	cleanup(t_data *data, t_philo *philos, int error, int flag)
 		init_destroy(data, flag);
 	if (data->threads)
 		free(data->threads);
+	if (data->forks)
+		free(data->forks);
 	if (data->states)
 		free(data->states);
 	if (data->meals_eaten)
@@ -35,9 +37,8 @@ int	init_destroy(t_data *data, int flag)
 		i = -1;
 		if (data->forks)
 		{
-			while (++i < data->philosopher_count)
+			while (++i < flag - 3)
 				pthread_mutex_destroy(&data->forks[i]);
-			free(data->forks);
 		}
 	}
 	return (1);
@@ -60,9 +61,9 @@ int	main(int ac, char **av)
 		return (cleanup(data, NULL, 1, 0));
 	philos = malloc(sizeof(t_philo) * data->philosopher_count);
 	if (!philos)
-		return (cleanup(data, NULL, 1, 4));
+		return (cleanup(data, NULL, 1, data->philosopher_count + 3));
 	if (thread_start(data, philos))
-		return (cleanup(data, philos, 1, 4));
-	cleanup(data, philos, 0, 4);
+		return (cleanup(data, philos, 1, data->philosopher_count + 3));
+	cleanup(data, philos, 0, data->philosopher_count + 3);
 	return (0);
 }

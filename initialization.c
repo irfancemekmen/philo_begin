@@ -42,7 +42,7 @@ int	mutex_initialization(t_data *data)
 	while (++i < data->philosopher_count)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (cleanup(data, NULL, 0, 3));
+			return (cleanup(data, NULL, 0, 3 + i));
 		data->states[i] = 0;
 		data->meals_eaten[i] = 0;
 		data->last_meal_time[i] = data->simulation_start;
